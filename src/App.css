@@ -36,3 +36,73 @@
     transform: rotate(360deg);
   }
 }
+
+
+select option[value="draw"] {
+color: #969b89;
+font-weight: 500 !important;
+font-size: 15px;
+}
+
+
+
+select option[value="drawcircle"] {
+color: #969b89;
+font-weight: 500 !important;
+background-image: url("../src/imgs/test.png");
+background-size: 15px 15px;
+background-position: center;
+font-size: 15px;
+
+}
+.mode-text2{
+  font-size: 10px !important;
+}
+
+
+
+select option[value="drawPolygon"] {
+color: #969b89;
+font-weight: 500 !important;
+font-size: 15px;
+}
+
+
+
+select option[value="editing"] {
+color: #969b89;
+font-weight: 500 !important;
+
+}
+
+
+
+
+
+#editor path {
+  
+  fill: #bfcad9 !important; 
+  fill-opacity: 0.2 !important;
+}
+
+
+.icon {
+  margin-left: 5px; 
+  font-size: 18px; 
+}
+
+.mode-text {
+  color: rgb(116, 14, 14) !important; 
+}
+
+#draw{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+}
+
+
+
