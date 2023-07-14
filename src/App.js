@@ -10,7 +10,7 @@ import {
 import * as turf from "@turf/turf";
 import centroid from "@turf/centroid";
 import { ModifyMode } from "@nebula.gl/edit-modes";
-
+import './styles/style.css'
 import { FaBeer } from "react-icons/fa";
 import Select from "react-dropdown-select";
 
@@ -52,6 +52,13 @@ const App = () => {
     setModeHandler(newModeHandler);
   };
 
+  const CustomDropdown = ({ icon, text }) => (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      {icon}
+      <span style={{ marginLeft: 5 }}>{text}</span>
+    </div>
+  );
+  
   const renderToolbar = () => {
     return (
       <>
@@ -63,53 +70,28 @@ const App = () => {
             Delete
           </button>
         </div>
-
-        <div
-          style={{ position: "absolute", top: 0, right: 0, maxWidth: "320px" }}
-        >
+  
+        <div style={{ position: "absolute", top: 0, right: 0, maxWidth: "420px" }}>
           <select
-            style={{
-              color: "#969b89",
-              marginRight: 20,
-              marginTop: 20,
-              padding: 4,
-            }}
+            style={{ color: "#969b89", marginRight: 20, marginTop: 20, padding: 4 }}
             onChange={switchMode}
           >
             <option value="draw">Draw</option>
             {MODES.map((mode) => (
               <option key={mode.id} value={mode.id}>
-                <span className="mode-text">{mode.text}</span>
-                <span className="mode-text2">{mode.text2}</span>
+                {mode.text === " Radius " ? (
+                  <CustomDropdown icon={<FaBeer />} text={mode.text} />
+                ) : (
+                  mode.text
+                )}
               </option>
             ))}
           </select>
         </div>
-
-        {/* New div with dropdown */}
-        <div
-          style={{ position: "absolute", top: 0, right: 0, maxWidth: "320px" }}
-        >
-          <Select
-            options={[
-              { value: "option1", label: "Option 1" },
-              { value: "option2", label: "Option 2" },
-              // Add more options as needed
-            ]}
-            onChange={(values) => {
-              // Handle the selected values
-            }}
-            style={{
-              color: "#969b89",
-              marginRight: 20,
-              marginTop: 20,
-              padding: 4,
-            }}
-          />
-        </div>
       </>
     );
   };
+   
 
   const handleDelete = () => {
     if (editorRef.current) {
@@ -122,12 +104,6 @@ const App = () => {
   const handleSelect = (selectedFeatures) => {
     console.log("Draw Features:", selectedFeatures.mapCoords);
   };
-
-  // const handleDrawingComplete = (e) => {
-  //   const { features } = e;
-  //   setSelectedFeatures(features);
-  //   console.log("Selected Features:", features);
-  // };
 
   return (
     <div>
@@ -145,8 +121,6 @@ const App = () => {
           clickRadius={12}
           mode={modeHandler}
           onSelect={handleSelect}
-          // onDrawCreate={handleDrawingComplete}
-          selectedFeatureIndex={selectedFeatures.length > 0 ? 0 : null}
         />
         {renderToolbar()}
       </MapGL>
