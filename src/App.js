@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapGL from "react-map-gl";
-import { Editor, EditingMode, DrawPolygonMode, DrawCircleFromCenterMode } from "react-map-gl-draw";
+import {
+  Editor,
+  EditingMode,
+  DrawPolygonMode,
+  DrawCircleFromCenterMode,
+} from "react-map-gl-draw";
 import * as turf from "@turf/turf";
 import centroid from "@turf/centroid";
-import {
-   
-    ModifyMode
-  } from "@nebula.gl/edit-modes";
-  
-const MAPBOX_TOKEN = "pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pwY3owbGFxMDVwNTNxcXdwMms2OWtzbiJ9.1PPVl0VLUQgqrosrI2nUhg";
+import { ModifyMode } from "@nebula.gl/edit-modes";
+
+import { FaBeer } from "react-icons/fa";
+import Select from "react-dropdown-select";
+
+const MAPBOX_TOKEN =
+  "pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pwY3owbGFxMDVwNTNxcXdwMms2OWtzbiJ9.1PPVl0VLUQgqrosrI2nUhg";
 
 const MODES = [
   {
@@ -19,7 +25,6 @@ const MODES = [
     handler: DrawCircleFromCenterMode,
   },
   { id: "drawPolygon", text: " Polygon  ⬡", handler: DrawPolygonMode },
-  { id: "editing", text: "Edit Feature", handler: EditingMode },
 ];
 
 const DEFAULT_VIEWPORT = {
@@ -60,12 +65,7 @@ const App = () => {
         </div>
 
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            maxWidth: "320px",
-          }}
+          style={{ position: "absolute", top: 0, right: 0, maxWidth: "320px" }}
         >
           <select
             style={{
@@ -85,19 +85,39 @@ const App = () => {
             ))}
           </select>
         </div>
+
+        {/* New div with dropdown */}
+        <div
+          style={{ position: "absolute", top: 0, right: 0, maxWidth: "320px" }}
+        >
+          <Select
+            options={[
+              { value: "option1", label: "Option 1" },
+              { value: "option2", label: "Option 2" },
+              // Add more options as needed
+            ]}
+            onChange={(values) => {
+              // Handle the selected values
+            }}
+            style={{
+              color: "#969b89",
+              marginRight: 20,
+              marginTop: 20,
+              padding: 4,
+            }}
+          />
+        </div>
       </>
     );
   };
 
   const handleDelete = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.deleteFeatures([selectedFeatures]))
+      console.log(editorRef.current.deleteFeatures([selectedFeatures]));
     }
     setSelectedFeatures([]);
     setViewport(DEFAULT_VIEWPORT);
   };
-  
-  
 
   const handleSelect = (selectedFeatures) => {
     console.log("Draw Features:", selectedFeatures.mapCoords);
