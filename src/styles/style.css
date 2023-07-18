@@ -88,3 +88,24 @@ select option[value="draw"] {
  
     }
     
+
+    .select{
+      background-color: blue;
+    }
+
+  /* .css-13cymwt-control{
+    margin-right: 20px ;
+    width: 93px;
+    height: 37px;
+  } */
+
+  .css-1dimb5e-singleValue{
+    color: #969b89 !important;
+
+  }
+  .css-1u9des2-indicatorSeparator{
+    display: none !important;
+  }
+  .css-b62m3t-container{
+    box-sizing: none !important;
+  }

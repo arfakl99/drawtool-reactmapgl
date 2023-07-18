@@ -17,6 +17,7 @@
     "react-map-gl": "^5.3.21",
     "react-map-gl-draw": "^1.0.4",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.4",
     "styled-components": "^6.0.2",
     "turf": "^7.0.0-alpha.1",
     "web-vitals": "^2.1.4"
