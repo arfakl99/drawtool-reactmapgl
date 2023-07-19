@@ -3,31 +3,34 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapGL from "react-map-gl";
 import {
   Editor,
-  EditingMode,
   DrawPolygonMode,
   DrawCircleFromCenterMode,
 } from "react-map-gl-draw";
 
 import "./styles/style.css";
-import { FaBeer } from "react-icons/fa";
-import Select, { components } from "react-select";
 
+import Select, { components } from "react-select";
+import { PiPolygon } from 'react-icons/pi';
+import { BiMinusCircle} from 'react-icons/bi';
+import { TiDelete} from 'react-icons/ti';
+import { AiFillDelete} from 'react-icons/ai';
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pwY3owbGFxMDVwNTNxcXdwMms2OWtzbiJ9.1PPVl0VLUQgqrosrI2nUhg";
 
 const MODES = [
   {
-    id: "drawcircle",
-    text: " Radius",
-    icon: require("./images/circle.png"),
-    handler: DrawCircleFromCenterMode,
-  },
-  {
     id: "drawPolygon",
     text: " Polygon ",
-    icon: require("./images/polygon.png"),
+    icon: <PiPolygon size={18} />,
     handler: DrawPolygonMode,
   },
+  {
+    id: "drawcircle",
+    text: " Radius",
+    icon: <BiMinusCircle size={18} />,
+    handler: DrawCircleFromCenterMode,
+  },
+ 
 ];
 
 const DEFAULT_VIEWPORT = {
@@ -52,41 +55,52 @@ const App = () => {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [currentShape, setCurrentShape] = useState(null);
   const [drawnFeaturesInfo, setDrawnFeaturesInfo] = useState([]);
-  const [drawingComplete, setDrawingComplete] = useState(false);
+  
 
   
 
   const switchMode2 = (newValue) => {
     const newModeId = newValue.value;
+    if (newModeId === "delete") {
+      handleDelete(); 
+      return; 
+    }
     const mode = MODES.find((m) => m.id === newModeId);
     const newModeHandler = mode ? new mode.handler() : null;
-
+  
     if (newModeHandler instanceof DrawCircleFromCenterMode) {
       setModeHandler(new DrawCircleFromCenterMode());
     } else if (newModeHandler instanceof DrawPolygonMode) {
       setModeHandler(new DrawPolygonMode());
     }
-
     setModeId2(newModeId);
     debugger;
   };
+  
 
-  const options = MODES.map((mode) => ({
-    value: mode.id,
-    label: mode.text,
-    icon: mode.icon,
-  }));
+  const options = [
+    ...MODES.map((mode) => ({
+      value: mode.id,
+      label: mode.text,
+      icon: mode.icon,
+    })),
+    {
+      value: "delete",
+      label: "Delete",
+      icon: <AiFillDelete size={18} />, 
+    },
+  ];
 
   const IconOption = (props) => (
     <components.Option {...props}>
-      <span style={{fontSize:16}}>{props.data.label}</span>
-      <img src={props.data.icon} style={{ width: 18,  }} alt={props.data.label} />
+      <span style={{ fontSize: 15, fontWeight: 400 }}>{props.data.label}</span>
+      {props.data.icon}
     </components.Option>
   );
 
   const MultiValueOption = (props) => (
     <components.MultiValue {...props}>
-      <img src={props.data.icon} style={{ width: 36 }} alt={props.data.label} />
+      <img src={props.data.icon} style={{ width: 18 }} alt={props.data.label} />
       <span>{props.data.label}</span>
     </components.MultiValue>
   );
@@ -97,13 +111,21 @@ const App = () => {
       backgroundColor: state.isSelected ? "#969b89" : "white",
       color: state.isSelected ? "white" : "#969b89",
       cursor: "pointer",
-      display: "flex", // Make the option content inline
+      display: "flex", 
       alignItems: "center", 
-      justifyContent: "space-between",
-      padding: "10px 5px",
+      justifyContent: "space-around",
+      padding: "0px -1px",
+      marginTop:"5px"
+      
       
     
      
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      color: "#969b89", // Change the color of the placeholder text here
+      fontSize: "16.5px",
+      fontWeight: 600,
     }),
    
     
@@ -128,8 +150,9 @@ const App = () => {
             top: 10,
             right: 20,
             fontSize:16.5,
-            fontWeight:500,
-            maxWidth: "420px",
+            fontWeight:600,
+            color:"black",
+            width:140
           }}
         >
           <Select
@@ -152,8 +175,6 @@ const App = () => {
     if (editorRef.current) {
       editorRef.current.deleteFeatures([selectedFeatures]);
     }
-    // setSelectedFeatures([]);
-    // setViewport(DEFAULT_VIEWPORT);
   };
 
   const handleFeatureUpdate = (features) => {
@@ -162,32 +183,12 @@ const App = () => {
       const lastFeature = features.data[features.data.length - 1];
       editorRef.current.deleteFeatures(0);
       setTimeout(() => editorRef.current.addFeatures(lastFeature), 100);
-
-      //
-      // editorRef.current.deleteFeatures(features.data[0]);
-      // editorRef.current.
-      // setDrawnFeaturesInfo([lastFeature]);
     } else {
       setDrawnFeaturesInfo(features.data);
     }
   };
 
-  const handleSelect = (selectedFeatures) => {
-    console.log("selectefFeature are " + selectedFeatures);
-    if (selectedFeatures.length > 0) {
-      const selectedFeature = selectedFeatures[0];
-      console.log("Selected Features:", selectedFeatures);
-
-      if (currentShape) {
-        if (editorRef.current) {
-          editorRef.current.deleteFeatures([currentShape]);
-        }
-      }
-
-      setCurrentShape(selectedFeature);
-      console.log("Current Shape:", currentShape);
-    }
-  };
+ 
 
   return (
     <div>
@@ -204,8 +205,6 @@ const App = () => {
           ref={editorRef}
           clickRadius={12}
           mode={modeHandler}
-          onSelect={handleSelect}
-          // onUpdate={handleGetFeatures}
           onUpdate={handleFeatureUpdate}
         />
         {renderToolbar()}
