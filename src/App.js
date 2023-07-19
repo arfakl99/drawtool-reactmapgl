@@ -80,7 +80,7 @@ const App = () => {
   const IconOption = (props) => (
     <components.Option {...props}>
       <span style={{fontSize:16}}>{props.data.label}</span>
-      <img src={props.data.icon} style={{ width: 18, paddingLeft:5 }} alt={props.data.label} />
+      <img src={props.data.icon} style={{ width: 18,  }} alt={props.data.label} />
     </components.Option>
   );
 
@@ -99,11 +99,11 @@ const App = () => {
       cursor: "pointer",
       display: "flex", // Make the option content inline
       alignItems: "center", 
-      justifyContent: "space-around",
-      padding: "10px 10px",
+      justifyContent: "space-between",
+      padding: "10px 5px",
       
-      ":hover": {  
-      }
+    
+     
     }),
    
     
@@ -127,6 +127,8 @@ const App = () => {
             position: "absolute",
             top: 10,
             right: 20,
+            fontSize:16.5,
+            fontWeight:500,
             maxWidth: "420px",
           }}
         >
