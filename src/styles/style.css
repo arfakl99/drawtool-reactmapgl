@@ -109,3 +109,7 @@ select option[value="draw"] {
   .css-b62m3t-container{
     box-sizing: none !important;
   }
+
+  .css-13cymwt-control{
+    height: 35px !important;
+  }

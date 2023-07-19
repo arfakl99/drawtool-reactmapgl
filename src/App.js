@@ -74,7 +74,7 @@ const App = () => {
       setModeHandler(new DrawPolygonMode());
     }
     setModeId2(newModeId);
-    debugger;
+   
   };
   
 
@@ -123,9 +123,30 @@ const App = () => {
     }),
     placeholder: (provided, state) => ({
       ...provided,
-      color: "#969b89", // Change the color of the placeholder text here
+      color: "#969b89", 
       fontSize: "16.5px",
       fontWeight: 600,
+    }),
+
+
+    control: (provided) => ({
+      ...provided,
+      borderRadius:"10px 10px 0px 0px",
+      // borderRadius: 1, 
+      border: "1px solid #ccc", 
+      boxShadow: "none", 
+      "&:hover": {
+        // borderColor: "#969b89", 
+      },
+    }),
+  
+    menu: (provided) => ({
+      ...provided,
+      // borderRadius: 1, 
+      borderRadius:" 0px 0px 10px 10px",
+      border: "1px solid #ccc", 
+      boxShadow: "none",
+      marginTop:"-1px"
     }),
    
     
@@ -142,7 +163,10 @@ const App = () => {
             fontSize:16.5,
             fontWeight:600,
             color:"black",
-            width:140
+            width:140,
+            
+            
+            
           }}
         >
           <Select
