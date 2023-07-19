@@ -134,16 +134,6 @@ const App = () => {
     const selectedOption2 = options.find((option) => option.value === modeId2);
     return (
       <>
-        <div style={{ position: "absolute", top: 0, right: 100, padding: 4 }}>
-          <button
-            style={{ color: "#969b89", marginRight: 40, marginTop: 10,width:70, height:30 }}
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-
-        {/* div2 */}
         <div
           style={{
             position: "absolute",
