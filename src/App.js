@@ -79,8 +79,8 @@ const App = () => {
 
   const IconOption = (props) => (
     <components.Option {...props}>
-      <img src={props.data.icon} style={{ width: 24 }} alt={props.data.label} />
-      <span style={{ marginLeft: 8 }}>{props.data.label}</span>
+      <span style={{fontSize:16}}>{props.data.label}</span>
+      <img src={props.data.icon} style={{ width: 18, paddingLeft:5 }} alt={props.data.label} />
     </components.Option>
   );
 
@@ -98,17 +98,14 @@ const App = () => {
       color: state.isSelected ? "white" : "#969b89",
       cursor: "pointer",
       display: "flex", // Make the option content inline
-      alignItems: "center", // Center the icon and text vertically
-    }),
-    optionLabel: {
+      alignItems: "center", 
+      justifyContent: "space-around",
+      padding: "10px 10px",
       
-      flex: 1, // Allow the label to take up remaining space
-    },
-    optionIcon: { 
-      width: 10,
-      height: 10, 
-      marginRight: 10, 
-    },
+      ":hover": {  
+      }
+    }),
+   
     
   };
   const renderToolbar = () => {
@@ -117,7 +114,7 @@ const App = () => {
       <>
         <div style={{ position: "absolute", top: 0, right: 100, padding: 4 }}>
           <button
-            style={{ color: "#969b89", marginRight: 20, marginTop: 10,width:70, height:30 }}
+            style={{ color: "#969b89", marginRight: 40, marginTop: 10,width:70, height:30 }}
             onClick={handleDelete}
           >
             Delete
