@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MapGL from "react-map-gl";
+import Map from "react-map-gl";
 import {
   Editor,
   DrawPolygonMode,
@@ -10,10 +10,10 @@ import {
 import "./styles/style.css";
 
 import Select, { components } from "react-select";
-import { PiPolygon } from 'react-icons/pi';
-import { BiMinusCircle} from 'react-icons/bi';
-import { TiDelete} from 'react-icons/ti';
-import { AiFillDelete} from 'react-icons/ai';
+import { PiPolygon } from "react-icons/pi";
+import { BiMinusCircle } from "react-icons/bi";
+import { TiDelete } from "react-icons/ti";
+import { AiFillDelete } from "react-icons/ai";
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pwY3owbGFxMDVwNTNxcXdwMms2OWtzbiJ9.1PPVl0VLUQgqrosrI2nUhg";
 
@@ -30,7 +30,6 @@ const MODES = [
     icon: <BiMinusCircle size={18} />,
     handler: DrawCircleFromCenterMode,
   },
- 
 ];
 
 const DEFAULT_VIEWPORT = {
@@ -55,31 +54,26 @@ const App = () => {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [currentShape, setCurrentShape] = useState(null);
   const [drawnFeaturesInfo, setDrawnFeaturesInfo] = useState([]);
-  
-
-  
 
   const switchMode2 = (newValue) => {
     const newModeId = newValue.value;
     if (newModeId === "delete") {
-      handleDelete(); 
-      return; 
+      handleDelete();
+      return;
     }
     const mode = MODES.find((m) => m.id === newModeId);
     const newModeHandler = mode ? new mode.handler() : null;
-  
+
     if (newModeHandler instanceof DrawCircleFromCenterMode) {
       setModeHandler(new DrawCircleFromCenterMode());
     } else if (newModeHandler instanceof DrawPolygonMode) {
       setModeHandler(new DrawPolygonMode());
     }
     setModeId2(newModeId);
-   
   };
-  
 
-  const options = [
-    ...MODES.map((mode) => ({
+  const [options, setOptions] = useState(
+    MODES.map((mode) => ({
       value: mode.id,
       label: mode.text,
       icon: mode.icon,
@@ -87,9 +81,10 @@ const App = () => {
     {
       value: "delete",
       label: "Delete",
-      icon: <AiFillDelete size={18} />, 
-    },
-  ];
+      icon: <AiFillDelete size={18} />,
+    }
+  );
+
 
   const IconOption = (props) => (
     <components.Option {...props}>
@@ -108,51 +103,47 @@ const App = () => {
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? "#969b89" : "white",
-      color: state.isSelected ? "white" : "#969b89",
+      backgroundColor: state.isSelected ? "#969b89" : "#969b89",
+      color: state.isSelected ? "#969b89" : "#969b89",
       cursor: "pointer",
-      display: "flex", 
-      alignItems: "center", 
+      display: "flex",
+      alignItems: "center",
       justifyContent: "space-around",
       padding: "0px -1px",
-      marginTop:"5px"
-      
-      
-    
-     
+      marginTop: "5px",
+      backgroundColor: "#f7f9f2",
     }),
     placeholder: (provided, state) => ({
       ...provided,
-      color: "#969b89", 
+      color: "#969b89",
       fontSize: "16.5px",
       fontWeight: 600,
     }),
 
-
     control: (provided) => ({
       ...provided,
-      borderRadius:"10px 10px 0px 0px",
-      // borderRadius: 1, 
-      border: "1px solid #ccc", 
-      boxShadow: "none", 
+      borderRadius: "10px 10px 0px 0px",
+      border: "1px solid #ccc",
+      boxShadow: "none",
+      backgroundColor: "#fcfcfc",
       "&:hover": {
-        // borderColor: "#969b89", 
+        // borderColor: "#969b89",
       },
     }),
-  
+
     menu: (provided) => ({
       ...provided,
-      // borderRadius: 1, 
-      borderRadius:" 0px 0px 10px 10px",
-      border: "1px solid #ccc", 
+      // borderRadius: 1,
+      borderRadius: " 0px 0px 10px 10px",
+      border: "1px solid #ccc",
       boxShadow: "none",
-      marginTop:"-1px"
+      backgroundColor: "#f7f9f2",
+      marginTop: "-1px",
     }),
-   
-    
   };
   const renderToolbar = () => {
     const selectedOption2 = options.find((option) => option.value === modeId2);
+
     return (
       <>
         <div
@@ -160,13 +151,10 @@ const App = () => {
             position: "absolute",
             top: 10,
             right: 20,
-            fontSize:16.5,
-            fontWeight:600,
-            color:"black",
-            width:140,
-            
-            
-            
+            fontSize: 16.5,
+            fontWeight: 600,
+
+            width: 140,
           }}
         >
           <Select
@@ -186,13 +174,31 @@ const App = () => {
   };
 
   const handleDelete = () => {
+   
     if (editorRef.current) {
       editorRef.current.deleteFeatures([selectedFeatures]);
+      if (drawnFeaturesInfo.length - 1 > 0 || drawnFeaturesInfo.length - 1 ===0) {
+        const filteredOptions = options.filter(
+          (option) => option.value !== "delete"
+        );
+        setOptions(filteredOptions);
+      }
     }
   };
 
+  // const handleFeatureUpdate = (features) => {
+  //   console.log("All Drawn Feature Info:", features);
+  //   if (features.data.length > 1) {
+  //     const lastFeature = features.data[features.data.length - 1];
+  //     editorRef.current.deleteFeatures(0);
+  //     setTimeout(() => editorRef.current.addFeatures(lastFeature), 100);
+  //   } else {
+  //     setDrawnFeaturesInfo(features.data);
+  //   }
+  // };
+
   const handleFeatureUpdate = (features) => {
-    console.log("All Drawn Feature Info:", features);
+    
     if (features.data.length > 1) {
       const lastFeature = features.data[features.data.length - 1];
       editorRef.current.deleteFeatures(0);
@@ -200,13 +206,31 @@ const App = () => {
     } else {
       setDrawnFeaturesInfo(features.data);
     }
-  };
+    console.log("All Drawn Feature Info:", features);
+    if (features.data.length === 1) {
+      const modifiedOptions = options.find(
+        (option) => option.value === "delete"
+      )
+        ? options
+        : [
+            ...options,
+            { value: "delete", label: "Delete", icon: <AiFillDelete size={18} /> },
+          ];
 
- 
+      setOptions(modifiedOptions);
+    } else if (features.data.length === 0) {
+      const filteredOptions = options.filter(
+        (option) => option.value !== "delete"
+      );
+
+      setOptions(filteredOptions);
+    }
+    setDrawnFeaturesInfo(features.data);
+  };
 
   return (
     <div>
-      <MapGL
+      <Map
         {...viewport}
         ref={mapRef}
         width="100vw"
@@ -222,7 +246,7 @@ const App = () => {
           onUpdate={handleFeatureUpdate}
         />
         {renderToolbar()}
-      </MapGL>
+      </Map>
     </div>
   );
 };
