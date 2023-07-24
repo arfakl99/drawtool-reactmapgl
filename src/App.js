@@ -42,17 +42,12 @@ const DEFAULT_VIEWPORT = {
 
 const App = () => {
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
-  const [modeId, setModeId] = useState(null);
   const [modeHandler, setModeHandler] = useState(null);
   const [modeId2, setModeId2] = useState(null);
-  const [modeHandler2, setModeHandler2] = useState(null);
 
   const editorRef = useRef();
   const mapRef = useRef();
-  const [editedFeatures, setEditedFeatures] = useState("CLOSING");
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [selectedFeature, setSelectedFeature] = useState(null);
-  const [currentShape, setCurrentShape] = useState(null);
   const [drawnFeaturesInfo, setDrawnFeaturesInfo] = useState([]);
 
   const switchMode2 = (newValue) => {
